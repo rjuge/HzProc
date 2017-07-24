@@ -65,6 +65,10 @@ void HZAffineFast(THCState *state, THCTensor *input_,
 	dim3 blocks(output.getSize(2)/16+1, output.getSize(1)/16+1, 
 							output.getSize(0));
 	HZAffine_Fast_kernel<<<blocks, threads, 0, stream>>>(input, output, matrix);
+	
+	//Free
+	THCTensor_(free)(state, mat_);
+	
 	THCudaCheck(cudaGetLastError());
 }
 
@@ -134,5 +138,9 @@ void HZAffineBili(THCState *state, THCTensor *input_,
 	dim3 blocks(output.getSize(2)/16+1, output.getSize(1)/16+1, 
 							output.getSize(0));
 	HZAffine_Bili_kernel<<<blocks, threads, 0, stream>>>(input, output, matrix);
+	
+	//Free
+	THCTensor_(free)(state, mat_);
+	
 	THCudaCheck(cudaGetLastError());
 }
